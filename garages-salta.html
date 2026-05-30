@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Garages en Salta</title>
+  <meta name="theme-color" content="#185FA5"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+  <meta name="apple-mobile-web-app-title" content="Garages Salta"/>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+  <style>
+    :root{--bg:#fff;--bg2:#f5f5f4;--bginfo:#E6F1FB;--tx:#1c1c1b;--tx2:#6b7280;--txinfo:#185FA5;--bd:#e5e7eb;--bd2:#d1d5db;--r:10px;--rl:14px;}
+    @media(prefers-color-scheme:dark){:root{--bg:#1a1a1a;--bg2:#242424;--bginfo:#1a2d42;--tx:#f0f0f0;--tx2:#9ca3af;--txinfo:#60a5fa;--bd:#2e2e2e;--bd2:#3a3a3a;}}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--tx);}
+    #app{max-width:680px;margin:0 auto;padding:1.25rem 1rem 3rem;}
+    h1{font-size:22px;font-weight:600;}
+    .sub{font-size:14px;color:var(--tx2);margin-top:4px;}
+    .tabs{display:flex;gap:4px;margin:16px 0;background:var(--bg2);padding:4px;border-radius:var(--r);width:fit-content;}
+    .tab{padding:7px 18px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;color:var(--tx2);border:none;background:none;transition:all .15s;}
+    .tab.active{background:var(--bg);color:var(--tx);box-shadow:0 1px 3px rgba(0,0,0,.1);}
+    .screen{display:none;}.screen.visible{display:block;}
+    .sbox{display:flex;gap:8px;margin-top:14px;}
+    .sbox input{flex:1;padding:10px 14px;border-radius:var(--r);border:1px solid var(--bd2);background:var(--bg);color:var(--tx);font-size:14px;}
+    .sbox input:focus{outline:none;border-color:#185FA5;}
+    .btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--r);font-size:14px;font-weight:500;cursor:pointer;transition:opacity .15s;white-space:nowrap;border:none;}
+    .binfo{background:var(--bginfo);color:var(--txinfo);border:1px solid #b5d4f4!important;}
+    .binfo:hover{opacity:.8;}
+    .bmaps{background:#EAF3DE;color:#3B6D11;border:1px solid #C0DD97;font-size:13px;padding:7px 14px;border-radius:var(--r);cursor:pointer;display:inline-flex;align-items:center;gap:5px;}
+    .bwalk{background:#E6F1FB;color:#185FA5;border:1px solid #B5D4F4;font-size:13px;padding:7px 14px;border-radius:var(--r);cursor:pointer;display:inline-flex;align-items:center;gap:5px;}
+    .bmaps:hover,.bwalk:hover{opacity:.8;}
+    .sugg{background:var(--bg);border:1px solid var(--bd2);border-radius:var(--r);margin-top:4px;overflow:hidden;display:none;box-shadow:0 4px 12px rgba(0,0,0,.08);}
+    .si{padding:9px 14px;font-size:13px;cursor:pointer;color:var(--tx);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px;}
+    .si:last-child{border-bottom:none;}.si:hover{background:var(--bg2);}
+    .sbar{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:var(--r);background:var(--bg2);border:1px solid var(--bd);font-size:13px;color:var(--tx2);margin:12px 0;}
+    .fpanel{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--rl);padding:1rem 1.25rem;margin-bottom:1.25rem;display:none;}
+    .fpanel.visible{display:block;}
+    .ftitle{font-size:12px;font-weight:600;color:var(--tx2);margin-bottom:12px;text-transform:uppercase;letter-spacing:.05em;}
+    .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+    @media(max-width:480px){.fgrid{grid-template-columns:1fr;}}
+    .fg label{font-size:12px;color:var(--tx2);display:block;margin-bottom:6px;}
+    .fg select{width:100%;padding:8px 10px;border-radius:var(--r);border:1px solid var(--bd2);background:var(--bg);color:var(--tx);font-size:13px;}
+    .chips{display:flex;gap:6px;flex-wrap:wrap;}
+    .chip{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--bd2);background:var(--bg);color:var(--tx2);transition:all .12s;}
+    .chip.active{background:var(--bginfo);color:var(--txinfo);border-color:#b5d4f4;}
+    .fff{margin-top:12px;display:flex;justify-content:space-between;align-items:center;}
+    .blimpiar{font-size:13px;color:var(--tx2);background:none;border:none;cursor:pointer;padding:0;}
+    .blimpiar:hover{color:var(--tx);}
+    .mapa{border-radius:var(--rl);border:1px solid var(--bd);overflow:hidden;margin-bottom:1.5rem;background:#dde8dd;height:240px;}
+    .noloc{text-align:center;padding:2rem 1rem;color:var(--tx2);font-size:14px;}
+    .glist{display:flex;flex-direction:column;gap:10px;}
+    .gcard{background:var(--bg);border-radius:var(--rl);border:1px solid var(--bd);padding:1rem 1.25rem;cursor:pointer;transition:border-color .15s;}
+    .gcard:hover{border-color:var(--bd2);}.gcard.sel{border:1.5px solid #185FA5;}
+    .gtop{display:flex;align-items:center;gap:14px;}
+    .grank{width:32px;height:32px;border-radius:50%;background:var(--bginfo);color:var(--txinfo);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0;}
+    .ginfo{flex:1;}
+    .gname{font-size:15px;font-weight:600;color:var(--tx);}
+    .gaddr{font-size:13px;color:var(--tx2);margin-top:2px;}
+    .gmeta{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;}
+    .badge{font-size:12px;padding:2px 10px;border-radius:8px;font-weight:500;}
+    .bg{background:#EAF3DE;color:#3B6D11;}.ba{background:#FAEEDA;color:#854F0B;}.br{background:#FCEBEB;color:#A32D2D;}.bgr{background:var(--bg2);color:var(--tx2);}.bb{background:#E6F1FB;color:#185FA5;}
+    .gdist{font-size:14px;font-weight:600;color:var(--txinfo);text-align:right;white-space:nowrap;}
+    .gact{display:none;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--bd);flex-wrap:wrap;}
+    .gact.visible{display:flex;}
+    .dpanel{background:var(--bg2);border-radius:var(--rl);border:1px solid var(--bd);padding:1.25rem;margin-top:1rem;display:none;}
+    .dpanel.visible{display:block;}
+    .drow{display:flex;justify-content:space-between;font-size:14px;padding:6px 0;border-bottom:1px solid var(--bd);}
+    .drow:last-child{border-bottom:none;}.dlbl{color:var(--tx2);}
+    .empty{text-align:center;padding:2rem;color:var(--tx2);font-size:14px;background:var(--bg2);border-radius:var(--rl);border:1px solid var(--bd);}
+    .rinfo{font-size:13px;color:var(--tx2);margin-bottom:10px;}
+    /* Admin */
+    .alogin{max-width:360px;margin:2rem auto;background:var(--bg2);border-radius:var(--rl);border:1px solid var(--bd);padding:2rem;text-align:center;}
+    .alogin h2{font-size:18px;font-weight:600;margin-bottom:6px;}
+    .alogin p{font-size:13px;color:var(--tx2);margin-bottom:1.5rem;}
+    .ig{text-align:left;margin-bottom:14px;}
+    .ig label{font-size:12px;color:var(--tx2);display:block;margin-bottom:5px;}
+    .ig input{width:100%;padding:10px 12px;border-radius:var(--r);border:1px solid var(--bd2);background:var(--bg);color:var(--tx);font-size:14px;}
+    .ig input:focus{outline:none;border-color:#185FA5;}
+    .bblock{width:100%;justify-content:center;margin-top:4px;}
+    .errmsg{font-size:13px;color:#A32D2D;margin-top:10px;display:none;}
+    .ahead{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;}
+    .ahead h2{font-size:18px;font-weight:600;}
+    .blogout{font-size:13px;color:var(--tx2);background:none;border:1px solid var(--bd2);padding:6px 12px;border-radius:var(--r);cursor:pointer;}
+    .blogout:hover{color:var(--tx);}
+    .acard{background:var(--bg);border-radius:var(--rl);border:1px solid var(--bd);padding:1.25rem;margin-bottom:12px;}
+    .achead{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;gap:12px;}
+    .acname{font-size:15px;font-weight:600;}
+    .acaddr{font-size:13px;color:var(--tx2);margin-top:2px;}
+    .tog{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--tx2);flex-shrink:0;}
+    .tsw{position:relative;width:40px;height:22px;}
+    .tsw input{opacity:0;width:0;height:0;}
+    .tsl{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#ccc;border-radius:22px;transition:.3s;}
+    .tsl:before{position:absolute;content:"";height:16px;width:16px;left:3px;bottom:3px;background:white;border-radius:50%;transition:.3s;}
+    input:checked+.tsl{background:#639922;}input:checked+.tsl:before{transform:translateX(18px);}
+    .afields{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+    @media(max-width:480px){.afields{grid-template-columns:1fr 1fr;}}
+    .af label{font-size:12px;color:var(--tx2);display:block;margin-bottom:5px;}
+    .af input{width:100%;padding:8px 10px;border-radius:var(--r);border:1px solid var(--bd2);background:var(--bg2);color:var(--tx);font-size:14px;}
+    .af input:focus{outline:none;border-color:#185FA5;background:var(--bg);}
+    .bsave{margin-top:14px;font-size:13px;padding:7px 16px;}
+    .sok{font-size:13px;color:#3B6D11;margin-left:10px;display:none;}
+    .anote{font-size:12px;color:var(--tx2);background:var(--bg2);border-radius:var(--r);padding:10px 14px;margin-bottom:1.25rem;border:1px solid var(--bd);}
+    .ibanner{display:none;align-items:center;gap:10px;background:var(--bginfo);border:1px solid #b5d4f4;border-radius:var(--r);padding:10px 14px;margin-bottom:14px;font-size:13px;color:var(--txinfo);}
+    .ibanner.visible{display:flex;}
+    .ibanner button{margin-left:auto;background:#185FA5;color:white;border:none;padding:6px 14px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;}
+  </style>
+</head>
+<body>
+<div id="app">
+  <div class="ibanner" id="ibanner">
+    <i class="ti ti-download" style="font-size:18px;flex-shrink:0;"></i>
+    <span>Instalá la app en tu celular</span>
+    <button onclick="instalarPWA()">Instalar</button>
+  </div>
+  <h1><i class="ti ti-parking" style="margin-right:8px;font-size:22px;vertical-align:-2px;"></i>Garages en Salta</h1>
+  <p class="sub">Encontrá los garages disponibles más cercanos</p>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('user')"><i class="ti ti-search" style="margin-right:5px;vertical-align:-1px;"></i>Buscar garage</button>
+    <button class="tab" onclick="switchTab('admin')"><i class="ti ti-settings" style="margin-right:5px;vertical-align:-1px;"></i>Admin</button>
+  </div>
+  <!-- USUARIO -->
+  <div class="screen visible" id="screen-user">
+    <div class="sbox">
+      <input type="text" id="addr-input" placeholder="Ej: Plaza 9 de Julio, Caseros y Alberdi..." oninput="onInput()" onkeydown="if(event.key==='Enter')buscar()" autocomplete="off"/>
+      <button class="btn binfo" onclick="buscar()"><i class="ti ti-search"></i> Buscar</button>
+    </div>
+    <div class="sugg" id="sugg"></div>
+    <div class="sbar"><i class="ti ti-info-circle"></i><span id="stxt">Ingresá tu dirección y presioná Buscar</span></div>
+    <div class="fpanel" id="fpanel">
+      <div class="ftitle"><i class="ti ti-adjustments-horizontal" style="vertical-align:-1px;margin-right:5px;"></i>Filtros</div>
+      <div class="fgrid">
+        <div class="fg"><label>Disponibilidad</label><div class="chips">
+          <div class="chip active" data-f="disp" data-v="todos" onclick="toggleChip(this)">Todos</div>
+          <div class="chip" data-f="disp" data-v="disponible" onclick="toggleChip(this)">Con lugar</div>
+          <div class="chip" data-f="disp" data-v="amplio" onclick="toggleChip(this)">Amplio +30%</div>
+        </div></div>
+        <div class="fg"><label>Horario</label><div class="chips">
+          <div class="chip active" data-f="hora" data-v="todos" onclick="toggleChip(this)">Todos</div>
+          <div class="chip" data-f="hora" data-v="24hs" onclick="toggleChip(this)">24 hs</div>
+          <div class="chip" data-f="hora" data-v="diurno" onclick="toggleChip(this)">Solo diurno</div>
+        </div></div>
+        <div class="fg"><label>Precio máximo</label>
+          <select id="fprecio" onchange="aplicarFiltros()">
+            <option value="9999">Cualquier precio</option>
+            <option value="650">Hasta $650/hr</option>
+            <option value="720">Hasta $720/hr</option>
+            <option value="800">Hasta $800/hr</option>
+          </select>
+        </div>
+        <div class="fg"><label>Servicios</label><div class="chips">
+          <div class="chip active" data-f="serv" data-v="todos" onclick="toggleChip(this)">Todos</div>
+          <div class="chip" data-f="serv" data-v="vigilado" onclick="toggleChip(this)">Vigilado</div>
+          <div class="chip" data-f="serv" data-v="cubierto" onclick="toggleChip(this)">Cubierto</div>
+          <div class="chip" data-f="serv" data-v="lavado" onclick="toggleChip(this)">Lavado</div>
+        </div></div>
+      </div>
+      <div class="fff">
+        <button class="blimpiar" onclick="limpiarFiltros()"><i class="ti ti-x" style="vertical-align:-1px;margin-right:3px;"></i>Limpiar</button>
+        <span id="fcount" style="font-size:13px;color:var(--tx2);"></span>
+      </div>
+    </div>
+    <div class="mapa" id="mapa"><div class="noloc"><i class="ti ti-map-2" style="font-size:40px;display:block;margin-bottom:8px;"></i>El mapa aparecerá después de ingresar tu dirección</div></div>
+    <div id="gls" style="display:none;">
+      <p class="rinfo" id="rinfo"></p>
+      <div class="glist" id="glist"></div>
+      <div class="dpanel" id="dpanel"></div>
+    </div>
+  </div>
+  <!-- LOGIN -->
+  <div class="screen" id="screen-login">
+    <div class="alogin">
+      <i class="ti ti-shield-lock" style="font-size:36px;color:var(--tx2);margin-bottom:12px;display:block;"></i>
+      <h2>Panel de Administración</h2>
+      <p>Ingresá tus credenciales</p>
+      <div class="ig"><label>Usuario</label><input type="text" id="lu" placeholder="admin" autocomplete="off"/></div>
+      <div class="ig"><label>Contraseña</label><input type="password" id="lp" placeholder="••••••" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+      <button class="btn binfo bblock" onclick="doLogin()"><i class="ti ti-login"></i> Ingresar</button>
+      <p class="errmsg" id="lerr">Usuario o contraseña incorrectos</p>
+      <p style="font-size:12px;color:var(--tx2);margin-top:16px;">Demo: <strong>admin</strong> / <strong>1234</strong></p>
+    </div>
+  </div>
+  <!-- ADMIN -->
+  <div class="screen" id="screen-admin">
+    <div class="ahead">
+      <div><h2><i class="ti ti-settings" style="margin-right:6px;vertical-align:-2px;"></i>Panel Admin</h2>
+      <p style="font-size:13px;color:var(--tx2);margin-top:2px;">Cambios reflejados en tiempo real</p></div>
+      <button class="blogout" onclick="doLogout()"><i class="ti ti-logout" style="vertical-align:-1px;margin-right:4px;"></i>Salir</button>
+    </div>
+    <div class="anote"><i class="ti ti-info-circle" style="vertical-align:-1px;margin-right:5px;"></i>Modificá los datos y presioná <strong>Guardar</strong>.</div>
+    <div id="alist"></div>
+  </div>
+</div>
+<script>
+let GARAGES=[
+  {name:"Garage Caseros Centro",addr:"Caseros 456, Microcentro",lat:-24.7872,lon:-65.4115,spaces:80,available:24,price:800,priceLabel:"$800/hr",open:"24 hs",open24:true,features:["Cubierto","Vigilado","Discapacidad"]},
+  {name:"Parking Dean Funes",addr:"Dean Funes 180, Plaza 9 de Julio",lat:-24.7855,lon:-65.4108,spaces:45,available:6,price:700,priceLabel:"$700/hr",open:"6:00–23:00",open24:false,features:["Cubierto","Vigilado"]},
+  {name:"Cochera España",addr:"España 320, Microcentro",lat:-24.7868,lon:-65.4132,spaces:30,available:0,price:650,priceLabel:"$650/hr",open:"7:00–21:00",open24:false,features:["Techado"]},
+  {name:"Garage Alberdi",addr:"Alberdi 845, Macrocentro",lat:-24.7892,lon:-65.4098,spaces:60,available:38,price:750,priceLabel:"$750/hr",open:"24 hs",open24:true,features:["Cubierto","Vigilado","Lavado"]},
+  {name:"Parking Mitre",addr:"Mitre 680, Centro",lat:-24.7848,lon:-65.4145,spaces:35,available:14,price:680,priceLabel:"$680/hr",open:"6:00–22:00",open24:false,features:["Descubierto","Vigilado"]},
+  {name:"Cochera Belgrano",addr:"Belgrano 1120, Macrocentro",lat:-24.7908,lon:-65.4122,spaces:50,available:3,price:720,priceLabel:"$720/hr",open:"24 hs",open24:true,features:["Cubierto","Acceso monta-autos"]},
+  {name:"Garage Leguizamón",addr:"Leguizamón 600, Zona Centro",lat:-24.7838,lon:-65.4095,spaces:25,available:19,price:600,priceLabel:"$600/hr",open:"8:00–20:00",open24:false,features:["Subsuelo","Vigilado"]},
+  {name:"Parking Entre Ríos",addr:"Av. Entre Ríos 1600, Macrocentro",lat:-24.7922,lon:-65.4155,spaces:70,available:42,price:600,priceLabel:"$600/hr",open:"24 hs",open24:true,features:["Cubierto","Vigilado"]}
+];
+const LUGARES=[
+  {label:"Plaza 9 de Julio (centro)",lat:-24.7859,lon:-65.4117},
+  {label:"Caseros y Alberdi",lat:-24.7875,lon:-65.4110},
+  {label:"Mitre y España",lat:-24.7852,lon:-65.4138},
+  {label:"Belgrano y Urquiza",lat:-24.7905,lon:-65.4128},
+  {label:"Dean Funes y Zuviría",lat:-24.7861,lon:-65.4102},
+  {label:"Av. Entre Ríos y San Martín",lat:-24.7918,lon:-65.4150},
+  {label:"Leguizamón y Lerma",lat:-24.7842,lon:-65.4090},
+  {label:"Caseros y Lerma",lat:-24.7880,lon:-65.4100},
+  {label:"España y Buenos Aires",lat:-24.7865,lon:-65.4140},
+  {label:"Alberdi y Urquiza",lat:-24.7895,lon:-65.4105},
+  {label:"San Martín y Mitre",lat:-24.7848,lon:-65.4120},
+  {label:"Rivadavia y Pellegrini",lat:-24.7870,lon:-65.4088}
+];
+let uLat=null,uLon=null,garages=[],selIdx=null,filt=[];
+let filtros={disp:"todos",hora:"todos",precio:9999,serv:"todos"},loggedIn=false,dp=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;document.getElementById('ibanner').classList.add('visible');});
+function instalarPWA(){if(dp){dp.prompt();dp.userChoice.then(()=>{dp=null;document.getElementById('ibanner').classList.remove('visible');});}}
+if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+function switchTab(t){
+  document.querySelectorAll('.tab').forEach((x,i)=>x.classList.toggle('active',(i===0&&t==='user')||(i===1&&t==='admin')));
+  document.getElementById('screen-user').classList.toggle('visible',t==='user');
+  if(t==='admin'){if(!loggedIn){document.getElementById('screen-login').classList.add('visible');document.getElementById('screen-admin').classList.remove('visible');}else{document.getElementById('screen-admin').classList.add('visible');document.getElementById('screen-login').classList.remove('visible');}}
+  else{document.getElementById('screen-login').classList.remove('visible');document.getElementById('screen-admin').classList.remove('visible');}
+}
+function doLogin(){const u=document.getElementById('lu').value.trim(),p=document.getElementById('lp').value;if(u==='admin'&&p==='1234'){loggedIn=true;document.getElementById('lerr').style.display='none';document.getElementById('screen-login').classList.remove('visible');document.getElementById('screen-admin').classList.add('visible');renderAdmin();}else document.getElementById('lerr').style.display='block';}
+function doLogout(){loggedIn=false;document.getElementById('lu').value='';document.getElementById('lp').value='';switchTab('user');}
+function renderAdmin(){document.getElementById('alist').innerHTML=GARAGES.map((g,i)=>`<div class="acard"><div class="achead"><div><div class="acname">${g.name}</div><div class="acaddr"><i class="ti ti-map-pin" style="font-size:12px;vertical-align:-1px;margin-right:3px;"></i>${g.addr}</div></div><label class="tog"><span>${g.open24?'Abierto':'Cerrado'}</span><div class="tsw"><input type="checkbox" id="tog-${i}" ${g.open24?'checked':''} onchange="toggleOpen(${i})"/><span class="tsl"></span></div></label></div><div class="afields"><div class="af"><label>Lugares totales</label><input type="number" id="sp-${i}" value="${g.spaces}" min="1"/></div><div class="af"><label>Lugares libres</label><input type="number" id="av-${i}" value="${g.available}" min="0"/></div><div class="af"><label>Precio ($/hr)</label><input type="number" id="pr-${i}" value="${g.price}" min="0"/></div></div><div style="display:flex;align-items:center;"><button class="btn binfo bsave" onclick="saveGarage(${i})"><i class="ti ti-device-floppy"></i> Guardar</button><span class="sok" id="ok-${i}"><i class="ti ti-check" style="vertical-align:-1px;margin-right:3px;"></i>¡Guardado!</span></div></div>`).join('');}
+function toggleOpen(i){GARAGES[i].open24=document.getElementById(`tog-${i}`).checked;GARAGES[i].open=GARAGES[i].open24?'24 hs':'Horario limitado';}
+function saveGarage(i){const s=parseInt(document.getElementById(`sp-${i}`).value)||0,a=Math.min(parseInt(document.getElementById(`av-${i}`).value)||0,s),p=parseInt(document.getElementById(`pr-${i}`).value)||0;GARAGES[i].spaces=s;GARAGES[i].available=a;GARAGES[i].price=p;GARAGES[i].priceLabel=`$${p}/hr`;document.getElementById(`av-${i}`).value=a;const ok=document.getElementById(`ok-${i}`);ok.style.display='inline';setTimeout(()=>ok.style.display='none',2000);if(uLat){garages=GARAGES.map(g=>({...g,dist:hav(uLat,uLon,g.lat,g.lon)})).sort((a,b)=>a.dist-b.dist);aplicarFiltros();}}
+function hav(la1,lo1,la2,lo2){const R=6371000,dL=(la2-la1)*Math.PI/180,dO=(lo2-lo1)*Math.PI/180,a=Math.sin(dL/2)**2+Math.cos(la1*Math.PI/180)*Math.cos(la2*Math.PI/180)*Math.sin(dO/2)**2;return Math.round(R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a)));}
+function fd(m){return m<1000?m+" m":(m/1000).toFixed(1)+" km";}
+function ab(a,t){if(a===0)return['br','Sin lugares'];return a/t>0.3?['bg',`${a} libres`]:['ba',`${a} libres — poco`];}
+function abrirMaps(gLat,gLon,m){const o=uLat?`${uLat},${uLon}`:'',d=`${gLat},${gLon}`,tm=m==='walk'?'walking':'driving';window.open(o?`https://www.google.com/maps/dir/?api=1&origin=${o}&destination=${d}&travelmode=${tm}`:`https://www.google.com/maps/search/?api=1&query=${d}`,'_blank');}
+function toggleChip(el){const f=el.dataset.f;document.querySelectorAll(`.chip[data-f="${f}"]`).forEach(c=>c.classList.remove('active'));el.classList.add('active');filtros[f]=el.dataset.v;aplicarFiltros();}
+function aplicarFiltros(){filtros.precio=parseInt(document.getElementById('fprecio').value);filt=garages.filter(g=>{if(filtros.disp==='disponible'&&g.available===0)return false;if(filtros.disp==='amplio'&&g.available/g.spaces<=0.3)return false;if(filtros.hora==='24hs'&&!g.open24)return false;if(filtros.hora==='diurno'&&g.open24)return false;if(g.price>filtros.precio)return false;if(filtros.serv==='vigilado'&&!g.features.some(f=>f.toLowerCase().includes('vigilado')))return false;if(filtros.serv==='cubierto'&&!g.features.some(f=>f.toLowerCase().includes('cubierto')))return false;if(filtros.serv==='lavado'&&!g.features.some(f=>f.toLowerCase().includes('lavado')))return false;return true;});document.getElementById('fcount').textContent=`${filt.length} de ${garages.length} garages`;selIdx=null;document.getElementById('dpanel').classList.remove('visible');renderListF(filt);renderMap(uLat,uLon,filt);}
+function limpiarFiltros(){filtros={disp:"todos",hora:"todos",precio:9999,serv:"todos"};document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active',c.dataset.v==='todos'));document.getElementById('fprecio').value='9999';aplicarFiltros();}
+function onInput(){const v=document.getElementById('addr-input').value.trim().toLowerCase(),b=document.getElementById('sugg');if(v.length<2){b.style.display='none';return;}const m=LUGARES.filter(l=>l.label.toLowerCase().includes(v)).slice(0,5);if(!m.length){b.style.display='none';return;}b.innerHTML=m.map(l=>`<div class="si" onclick="elegir('${l.label}',${l.lat},${l.lon})"><i class="ti ti-map-pin" style="font-size:14px;color:var(--tx2);"></i>${l.label}</div>`).join('');b.style.display='block';}
+function elegir(label,lat,lon){document.getElementById('addr-input').value=label;document.getElementById('sugg').style.display='none';procesar(lat,lon,label);}
+function buscar(){const v=document.getElementById('addr-input').value.trim().toLowerCase();if(!v)return;const m=LUGARES.find(l=>l.label.toLowerCase().includes(v));if(m)procesar(m.lat,m.lon,m.label);else document.getElementById('stxt').textContent='No encontré esa dirección.';document.getElementById('sugg').style.display='none';}
+function procesar(lat,lon,label){uLat=lat;uLon=lon;document.getElementById('stxt').textContent='Mostrando garages cercanos a: '+label;garages=GARAGES.map(g=>({...g,dist:hav(lat,lon,g.lat,g.lon)})).sort((a,b)=>a.dist-b.dist);selIdx=null;document.getElementById('fpanel').classList.add('visible');document.getElementById('gls').style.display='block';document.getElementById('dpanel').classList.remove('visible');limpiarFiltros();}
+function renderListF(lista){selIdx=null;document.getElementById('rinfo').textContent=lista.length?`${lista.length} garage${lista.length>1?'s':''} encontrado${lista.length>1?'s':''} · hacé clic para detalles y ruta`:'';if(!lista.length){document.getElementById('glist').innerHTML=`<div class="empty"><i class="ti ti-mood-sad" style="font-size:32px;display:block;margin-bottom:8px;"></i>Ningún garage coincide con los filtros.</div>`;return;}document.getElementById('glist').innerHTML=lista.map((g,i)=>{const[bc,bl]=ab(g.available,g.spaces),idx=garages.indexOf(g);return`<div class="gcard" id="c-${idx}" onclick="sel(${idx})"><div class="gtop"><div class="grank">${i+1}</div><div class="ginfo"><div class="gname">${g.name}</div><div class="gaddr"><i class="ti ti-map-pin" style="font-size:13px;vertical-align:-1px;margin-right:3px;"></i>${g.addr}</div><div class="gmeta"><span class="badge ${bc}">${bl}</span><span class="badge bgr"><i class="ti ti-clock" style="font-size:12px;vertical-align:-1px;margin-right:2px;"></i>${g.open}</span><span class="badge bb">${g.priceLabel}</span></div></div><div class="gdist"><i class="ti ti-walk" style="font-size:16px;display:block;margin:0 auto 2px;"></i>${fd(g.dist)}</div></div><div class="gact" id="a-${idx}"><button class="bmaps" onclick="event.stopPropagation();abrirMaps(${g.lat},${g.lon},'drive')"><i class="ti ti-car"></i> Ir en auto</button><button class="bwalk" onclick="event.stopPropagation();abrirMaps(${g.lat},${g.lon},'walk')"><i class="ti ti-walk"></i> Ir a pie</button><button class="bmaps" style="background:#EEEDFE;color:#534AB7;border-color:#AFA9EC;" onclick="event.stopPropagation();abrirMaps(${g.lat},${g.lon},'transit')"><i class="ti ti-map-2"></i> Ver en mapa</button></div></div>`;}).join('');}
+function sel(i){const was=selIdx===i;selIdx=was?null:i;document.querySelectorAll('.gcard').forEach(c=>c.classList.remove('sel'));document.querySelectorAll('.gact').forEach(a=>a.classList.remove('visible'));if(!was){document.getElementById(`c-${i}`)?.classList.add('sel');document.getElementById(`a-${i}`)?.classList.add('visible');const g=garages[i],pct=Math.round((g.available/g.spaces)*100),p=document.getElementById('dpanel');p.innerHTML=`<p style="font-size:15px;font-weight:600;color:var(--tx);margin-bottom:12px;"><i class="ti ti-parking" style="margin-right:6px;"></i>${g.name}</p><div class="drow"><span class="dlbl">Dirección</span><span>${g.addr}</span></div><div class="drow"><span class="dlbl">Distancia</span><span style="color:var(--txinfo);font-weight:600;">${fd(g.dist)}</span></div><div class="drow"><span class="dlbl">Lugares libres</span><span>${g.available} de ${g.spaces} (${pct}%)</span></div><div class="drow"><span class="dlbl">Precio</span><span>${g.priceLabel}</span></div><div class="drow"><span class="dlbl">Horario</span><span>${g.open}</span></div><div class="drow"><span class="dlbl">Servicios</span><span>${g.features.join(', ')}</span></div>`;p.classList.add('visible');}else document.getElementById('dpanel').classList.remove('visible');renderMap(uLat,uLon,filt);}
+function renderMap(uL,uO,pts){if(!uL||!pts.length){document.getElementById('mapa').innerHTML='<div class="noloc"><i class="ti ti-map-2" style="font-size:40px;display:block;margin-bottom:8px;"></i>Sin resultados para mostrar</div>';return;}const aL=[uL,...pts.map(g=>g.lat)],aO=[uO,...pts.map(g=>g.lon)],mnL=Math.min(...aL),mxL=Math.max(...aL),mnO=Math.min(...aO),mxO=Math.max(...aO),pad=.0008,W=680,H=240;function px(la,lo){return[Math.round(((lo-mnO+pad)/(mxO-mnO+2*pad))*W),Math.round(H-((la-mnL+pad)/(mxL-mnL+2*pad))*H)];}const[ux,uy]=px(uL,uO);let li='',dt='';pts.forEach((g,i)=>{const[gx,gy]=px(g.lat,g.lon),is=selIdx===garages.indexOf(g);li+=`<line x1="${ux}" y1="${uy}" x2="${gx}" y2="${gy}" stroke="${is?'#185FA5':'#378ADD'}" stroke-width="${is?2:1}" stroke-dasharray="${is?'none':'4,3'}" opacity="${is?.9:.35}"/>`;const c=g.available===0?'#E24B4A':(g.available/g.spaces>.3?'#639922':'#EF9F27');dt+=`<g style="cursor:pointer" onclick="sel(${garages.indexOf(g)})"><circle cx="${gx}" cy="${gy}" r="${is?16:13}" fill="${c}" opacity="${is?1:.85}" stroke="${is?'white':'none'}" stroke-width="${is?2.5:0}"/><text x="${gx}" y="${gy+5}" text-anchor="middle" font-size="11" font-weight="500" fill="white">${i+1}</text></g>`;});document.getElementById('mapa').innerHTML=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;"><defs><pattern id="grid" width="35" height="35" patternUnits="userSpaceOnUse"><path d="M 35 0 L 0 0 0 35" fill="none" stroke="#b8ccb8" stroke-width="0.5"/></pattern></defs><rect width="${W}" height="${H}" fill="#dde8dd"/><rect width="${W}" height="${H}" fill="url(#grid)" opacity="0.5"/><text x="${W/2}" y="18" text-anchor="middle" font-size="12" fill="#5F5E5A" opacity="0.7">Microcentro · Salta Capital</text>${li}${dt}<circle cx="${ux}" cy="${uy}" r="18" fill="#185FA5" opacity="0.15"/><circle cx="${ux}" cy="${uy}" r="9" fill="#185FA5" stroke="white" stroke-width="2"/><text x="${ux}" y="${uy-21}" text-anchor="middle" font-size="11" fill="#185FA5" font-weight="500">Vos</text><g transform="translate(8,${H-28})"><circle cx="8" cy="8" r="6" fill="#639922"/><text x="18" y="12" font-size="10" fill="#5F5E5A">Disponible</text><circle cx="90" cy="8" r="6" fill="#EF9F27"/><text x="100" y="12" font-size="10" fill="#5F5E5A">Poco lugar</text><circle cx="172" cy="8" r="6" fill="#E24B4A"/><text x="182" y="12" font-size="10" fill="#5F5E5A">Lleno</text></g></svg>`;}
+</script>
+</body>
+</html>
