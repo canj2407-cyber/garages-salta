@@ -2,7 +2,7 @@
   "name": "Garages en Salta",
   "short_name": "Garages Salta",
   "description": "Encontrá garages disponibles cercanos en Salta Capital",
-  "start_url": "/",
+  "start_url": "/garages-salta/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#185FA5",
